@@ -1,6 +1,6 @@
 // import * as mongoose from 'mongoose'
 import mongoose from 'mongoose'
-import config from 'config/config'
+import config from '../config'
 
 interface IConnectOptions {
     autoReconnect: boolean;

@@ -2,8 +2,11 @@ FROM node:16-alpine
 
 WORKDIR /app
 
+COPY package.json .
+COPY yarn.lock .
+
+RUN yarn install
+
 COPY . .
 
-RUN yarn install --production
-
-CMD ["node", "src/index.js"]
+CMD ["yarn", "run", "build"]

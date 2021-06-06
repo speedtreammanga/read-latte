@@ -7,7 +7,7 @@ import MongoStore from 'connect-mongo'
 import session from 'express-session';
 import { HttpError } from '../error/index';
 import { sendHttpErrorModule } from '../error/sendHttpError';
-import config from 'config/config'
+import config from '../config'
 
 /**
  * @export

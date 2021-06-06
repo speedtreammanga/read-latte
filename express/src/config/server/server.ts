@@ -1,7 +1,7 @@
 import express from 'express';
 import * as Middleware from '../middleware/middleware';
 import * as Routes from '../../routes';
-import config from 'config/config'
+import config from '../config'
 
 /**
  * @constant {express.Application}
