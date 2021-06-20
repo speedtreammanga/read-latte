@@ -1,12 +1,20 @@
-FROM node:16-alpine
+FROM node:16-alpine as base
 
-WORKDIR /app
+WORKDIR /app/express
 
-COPY package.json .
-COPY yarn.lock .
+COPY package.json ./
+COPY yarn.lock ./
 
 RUN yarn install
 
 COPY . .
 
-CMD ["yarn", "run", "build"]
+RUN yarn build
+
+EXPOSE 8080
+
+FROM node:16-alpine as production
+
+WORKDIR /build
+
+COPY --from=base /app/express/build .

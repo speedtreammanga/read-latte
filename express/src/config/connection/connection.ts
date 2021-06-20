@@ -1,23 +1,22 @@
-// import * as mongoose from 'mongoose'
 import mongoose from 'mongoose'
 import config from '../config'
 
-interface IConnectOptions {
-    autoReconnect: boolean;
-    reconnectTries: number; // Never stop trying to reconnect
-    reconnectInterval: number;
-    loggerLevel ? : string;
-    useNewUrlParser ? : boolean;
-}
-
-const connectOptions: IConnectOptions = {
+const connectOptions: mongoose.ConnectOptions = {
     autoReconnect: true,
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 1000,
     useNewUrlParser: true,
+    useUnifiedTopology: true,
+    authSource: "admin",
+    auth: {
+        user: config.database.MONGO_DB_USERNAME,
+        password: config.database.MONGO_DB_PASSWORD
+    }
 };
 
 const MONGO_URI: string = `${config.database.MONGO_DB_URI}${config.database.MONGO_DB_MAIN}`;
+
+console.log('>> MONG_URI :::', MONGO_URI)
 
 export const db: mongoose.Connection = mongoose.createConnection(MONGO_URI, connectOptions);
 

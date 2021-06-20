@@ -1,12 +1,12 @@
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
+import compression from 'compression'
+// import cookieParser from 'cookie-parser';
 import cors from 'cors'
 import express from 'express';
 import helmet from 'helmet'
 import MongoStore from 'connect-mongo'
-import session from 'express-session';
+// import session from 'express-session';
 import { HttpError } from '../error/index';
-import { sendHttpErrorModule } from '../error/sendHttpError';
+// import { sendHttpErrorModule } from '../error/sendHttpError';
 import config from '../config'
 
 /**
@@ -18,7 +18,7 @@ export function configure(app: express.Application): void {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }))
     // parse Cookie header and populate req.cookies with an object keyed by the cookie names.
-    app.use(cookieParser());
+    // app.use(cookieParser());
     // returns the compression middleware
     app.use(compression());
     // helps you secure your Express apps by setting various HTTP headers
@@ -26,19 +26,20 @@ export function configure(app: express.Application): void {
     // providing a Connect/Express middleware that can be used to enable CORS with various options
     app.use(cors());
 
-    app.use(session({
-        resave: true,
-        saveUninitialized: true,
-        secret: config.session.secret,
-        name: 'api.sid',
-        store: MongoStore.create({
-            mongoUrl: `${config.database.MONGO_DB_URI}${config.database.MONGO_DB_MAIN}`,
-            autoRemove: 'interval',
-            autoRemoveInterval: 10
-        })
-    }));
+    // app.use(session({
+    //     resave: true,
+    //     saveUninitialized: true,
+    //     secret: config.session.secret,
+    //     name: 'api.sid',
+    //     store: MongoStore.create({
+    //         mongoUrl: `${config.database.MONGO_DB_URI}${config.database.MONGO_DB_MAIN}`,
+    //         autoRemove: 'interval',
+    //         autoRemoveInterval: 10
+    //     })
+    // }));
+
     // custom errors
-    app.use(sendHttpErrorModule);
+    // app.use(sendHttpErrorModule);
 
     // cors
     app.use((req, res, next) => {
@@ -70,14 +71,17 @@ export function initErrorHandler(app: express.Application): void {
         }
 
         if (error instanceof HttpError) {
-            res.sendHttpError(error);
+            // res.sendHttpError(error);
+            res.json(error)
         } else {
             if (app.get('env') === 'development') {
                 error = new HttpError(500, error.message);
-                res.sendHttpError(error);
+                // res.sendHttpError(error);
+                res.json(error)
             } else {
                 error = new HttpError(500);
-                res.sendHttpError(error, error.message);
+                // res.sendHttpError(error, error.message);
+                res.json(error)
             }
         }
 

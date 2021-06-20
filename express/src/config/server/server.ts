@@ -24,7 +24,7 @@ Routes.init(app);
 Middleware.initErrorHandler(app);
 
 /**
- * sets port 3000 to default or unless otherwise specified in the environment
+ * sets port 8080 to default or unless otherwise specified in the environment
  */
 
 app.set('port', config.node.port || 8080);

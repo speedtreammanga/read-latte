@@ -6,10 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -b",
-    "serve": "node ./build/config/server/index.js",
+    "serve": "node build/config/server/index.js",
     "ts:watch": "tsc -w",
-    "start": "nodemon --config nodemon.json",
-    "deploy": "yarn build && yarn serve"
+    "start": "nodemon --legacy-watch --config nodemon.json"
   },
   "keywords": [],
   "author": "",

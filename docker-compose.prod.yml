@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+    nodejs:
+        build:
+            target: production
+        env_file: .env.prod
+        command: yarn serve

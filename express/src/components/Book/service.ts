@@ -15,7 +15,7 @@ const BookService: IBookService = {
      * @returns {Promise<IBookModel[]>}
      * @memberof BookService
      */
-    async findAll(skip: number, limit: number): Promise<IBookModel[]> {
+    async findAll(skip?: number, limit?: number): Promise<IBookModel[]> {
         try {
             const paged = { skip: skip || 0, limit: limit || 10 }
             const validate: Joi.ValidationResult = BookValidation.getPaged(paged)

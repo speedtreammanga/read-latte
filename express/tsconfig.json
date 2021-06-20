@@ -6,9 +6,9 @@
         "noImplicitAny": true,
         "target": "es6",
         "sourceMap": true,
-        "baseUrl": "src",
+        "baseUrl": ".",
         "paths": {
-            "*": ["*"] 
+            "*": ["src", "node_modules"] 
         },
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,

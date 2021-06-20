@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+    nodejs:
+        command: yarn start
+        env_file: .env
+        volumes:
+            - ./express/src:/app/express/src
+            - ./express/nodemon.json:/app/express/nodemon.json

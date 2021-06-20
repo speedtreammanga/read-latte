@@ -12,7 +12,8 @@ import { NextFunction, Request, Response } from 'express';
  */
 export async function findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-        const books: IBookModel[] = await BookService.findAll();
+        const { skip, take } = req.params
+        const books: IBookModel[] = await BookService.findAll(Number(skip) || 0, Number(take) || 0);
 
         res.status(200).json(books);
     } catch (error) {

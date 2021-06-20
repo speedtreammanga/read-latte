@@ -41,8 +41,8 @@ class BookValidation extends Validation {
 
     getPaged(params: { skip?: number, limit?: number}): Joi.ValidationResult {
         const schema: Joi.Schema = Joi.object().keys({
-            skip: Joi.number().positive().min(0).required(),
-            limit: Joi.number().positive().min(1).required()
+            skip: Joi.number().min(0).required(),
+            limit: Joi.number().min(1).required()
         })
         return schema.validate(params)
     }
