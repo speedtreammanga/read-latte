@@ -16,8 +16,6 @@ const connectOptions: mongoose.ConnectOptions = {
 
 const MONGO_URI: string = `${config.database.MONGO_DB_URI}${config.database.MONGO_DB_MAIN}`;
 
-console.log('>> MONG_URI :::', MONGO_URI)
-
 export const db: mongoose.Connection = mongoose.createConnection(MONGO_URI, connectOptions);
 
 // handlers

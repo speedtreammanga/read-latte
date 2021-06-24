@@ -2,8 +2,8 @@ const config = {
     database: {
         MONGO_DB_URI: process.env.MONGO_DB_URI,
         MONGO_DB_MAIN: process.env.MONGO_DB_MAIN,
-        MONGO_DB_USERNAME: process.env.MONGO_USERNAME,
-        MONGO_DB_PASSWORD: process.env.MONGO_PASSWORD
+        MONGO_DB_USERNAME: process.env.MONGO_ROOT_USERNAME,
+        MONGO_DB_PASSWORD: process.env.MONGO_ROOT_PASSWORD
     },
     session: {
         secret: process.env.NODE_SESSION_SECRET
