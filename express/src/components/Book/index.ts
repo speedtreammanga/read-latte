@@ -1,6 +1,6 @@
 import BookService from './service';
 import { HttpError } from '../../config/error';
-import { IBookModel } from './model';
+import BookModel, { IBookBaseModel, IBookModel } from './model';
 import { NextFunction, Request, Response } from 'express';
 import { uriToHtml, getBookSchemaFromHtml } from './helpers';
 
@@ -50,12 +50,20 @@ export async function create(req: Request, res: Response, next: NextFunction): P
     try {
         const { uri } = req.body
 
-        if (uri) res.status(400).json({ error: "To insert a book, you need to send a valid uri as part of your request." })
-
-        const html = await uriToHtml(uri)
-        const bookBody = getBookSchemaFromHtml(html)
+        if (!uri) res.status(400).json({ error: "To insert a book, you need to send a valid uri as part of your request." })
         
-        const book: IBookModel = await BookService.insert(req.body);
+        const html = await uriToHtml(uri)
+        const bookBody: IBookBaseModel = {
+            ...getBookSchemaFromHtml(html),
+            uri,
+            create_date: new Date().toISOString(),
+            update_date: new Date().toISOString()
+        }
+        
+        const found = await BookModel.findOne({ isbn: bookBody.isbn })
+        if (found) res.status(400).json({ error: `The book "${found.title}" already exists in the database` })
+        
+        const book: IBookModel = await BookService.insert(bookBody);
 
         res.status(201).json(book);
     } catch (error) {

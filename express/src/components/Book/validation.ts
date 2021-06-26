@@ -31,16 +31,19 @@ class BookValidation extends Validation {
             title: Joi.string().trim().required(),
             img: Joi.string().trim().required(),
             authors: Joi.string().trim().required(),
-            toc: Joi.array().items(Joi.object().keys({
-                title: Joi.string().trim().required(),
-                uri: Joi.string().trim().required(),
-                level: Joi.string().trim().required(),
-                read: Joi.boolean().required()
-            }).required()).required(),
+            // toc: Joi.array().items(Joi.object().keys({
+            //     title: Joi.string().trim().required(),
+            //     uri: Joi.string().trim().required(),
+            //     level: Joi.string().trim().required(),
+            //     read: Joi.boolean().required()
+            // }).required()).required(),
+            toc: Joi.string().required(),
             description: Joi.string().trim().required(),
             isbn: Joi.string().trim().required(),
             deleted: Joi.boolean().required(),
             release_date: Joi.string().trim().required(),
+            create_date: Joi.date().required(),
+            update_date: Joi.date().required(),
             stars: Joi.number().min(0).max(5).required()
         }).required()
         return schema.validate(params)

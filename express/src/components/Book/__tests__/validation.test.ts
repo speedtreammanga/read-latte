@@ -13,12 +13,14 @@ describe("testing Books validation rules", () => {
             release_date: "November 2020",
             deleted: false,
             stars: 3,
-            toc: [{
+            toc: JSON.stringify([{
                 level: "1",
                 read: false,
                 title: "Chapter 1. How not to read",
                 uri: "https://oreilly.com/book/preview/some-book-title#chap1"
-            }]
+            }]),
+            create_date: new Date().toISOString(),
+            update_date: new Date().toISOString()
         }
         let res = BookValidation.createBook(validBook)
         expect(res.error).toBeUndefined()

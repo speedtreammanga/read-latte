@@ -1,6 +1,6 @@
 import nodeFetch from 'node-fetch'
 import cheerio from 'cheerio'
-import { IBookModel, TocItem } from './model'
+import { IBookSimplesModel, TocItem } from './model'
 
 export async function uriToHtml(url: string): Promise<string> {
     try {
@@ -11,7 +11,7 @@ export async function uriToHtml(url: string): Promise<string> {
     }
 }
 
-export function getBookSchemaFromHtml(content: string): Partial<IBookModel> {
+export function getBookSchemaFromHtml(content: string): IBookSimplesModel {
     try {
         const $ = cheerio.load(content)
         const $body = $('body')
@@ -33,13 +33,16 @@ export function getBookSchemaFromHtml(content: string): Partial<IBookModel> {
             })
 
         return {
-            toc,
+            toc: JSON.stringify(toc),
             title: $($body.find('.t-title')[0]).text(),
             authors: $($body.find('.t-authors')[0]).text(),
             isbn: arrIsbn[1],
             release_date: `${arrRelease_date[1]} ${arrRelease_date[2]}`,
             img: $($body.find('.t-cover-img')[0]).attr('src'),
             description: $($body.find('.t-description span p')[0]).text(),
+            deleted: false,
+            stars: 0,
+            uri: ""
         }
     } catch (e) {
         throw new Error(e)

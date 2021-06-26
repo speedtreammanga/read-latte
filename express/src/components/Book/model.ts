@@ -9,12 +9,7 @@ export interface TocItem {
     read: boolean
 }
 
-/**
- * @export
- * @interface IBookBaseModel
- * @extends {Document}
- */
-export interface IBookBaseModel {
+export interface IBookSimplesModel {
     uri: string;
     title: string;
     img: string;
@@ -24,7 +19,18 @@ export interface IBookBaseModel {
     release_date: string;
     deleted: boolean;
     stars: number;
-    toc: TocItem[];
+    // toc: TocItem[];
+    toc: string;
+}
+
+/**
+ * @export
+ * @interface IBookBaseModel
+ * @extends {Document}
+ */
+export interface IBookBaseModel extends IBookSimplesModel {
+    create_date: string;
+    update_date: string;
 }
 
 /**
@@ -49,12 +55,16 @@ const BookSchema: Schema = new Schema({
     release_date: String,
     deleted: Boolean,
     authors: String,
-    stars: Number
+    stars: Number,
+    toc: String,
+    create_date: String,
+    update_date: String
 }, {
     collection: 'bookmodel',
     versionKey: false
-}).pre('save', async function (next: NextFunction): Promise < void > {
+}).pre('save', async function (next: NextFunction): Promise<void> {
     const book: any = this; // tslint:disable-line
+    book.update_date = new Date()
     try {
         next();
     } catch (error) {

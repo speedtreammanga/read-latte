@@ -1,14 +1,13 @@
 import * as Joi from 'joi';
-import BookModel, { IBookModel } from './model';
+import BookModel, { IBookModel, IBookBaseModel } from './model';
 import BookValidation from './validation';
-import { IBookService } from './interface';
 import { Types } from 'mongoose';
 
 /**
  * @export
  * @implements {IBookModelService}
  */
-const BookService: IBookService = {
+const BookService = {
     /**
      * @param {number} skip
      * @param {number} limit
@@ -24,7 +23,7 @@ const BookService: IBookService = {
                 throw new Error(validate.error.message)
             }
 
-            return await BookModel.find({});
+            return await BookModel.find({}, '-toc')
         } catch (error) {
             throw new Error(error.message);
         }
@@ -56,9 +55,8 @@ const BookService: IBookService = {
      * @returns {Promise<IBookModel>}
      * @memberof BookService
      */
-    async insert(body: IBookModel): Promise<IBookModel> {
+    async insert(body: IBookBaseModel): Promise<IBookModel> {
         try {
-            body.deleted = false
             const validate: Joi.ValidationResult = BookValidation.createBook(body);
 
             if (validate.error) {
@@ -86,11 +84,14 @@ const BookService: IBookService = {
             }
 
             // const book = await BookModel.findById({ id: Types.ObjectId(id) })
-            const book = await BookModel.findByIdAndUpdate(
-                { _id: Types.ObjectId(id) },
-                { deleted: true },
-                { upsert: true },
-            )
+            // soft del
+            // const book = await BookModel.findByIdAndUpdate(
+            //     { _id: Types.ObjectId(id) },
+            //     { deleted: true },
+            //     { upsert: true },
+            // )
+            // hard del
+            const book = await BookModel.findOneAndRemove({ _id: Types.ObjectId(id) })
             return book;
         } catch (error) {
             throw new Error(error.message);
