@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 import Validation from '../validation';
-import { IBookModel } from './model';
+import { IBookBaseModel, IBookModel } from './model';
 
 /**
  * @export
@@ -18,11 +18,11 @@ class BookValidation extends Validation {
     }
 
     /**
-     * @param {IBookModel} params
-     * @returns {Joi.ValidationResult<IBookModel >}
+     * @param {IBookBaseModel} params
+     * @returns {Joi.ValidationResult<IBookBaseModel>}
      * @memberof BookValidation
      */
-    createBook(params: IBookModel): Joi.ValidationResult {
+    createBook(params: IBookBaseModel): Joi.ValidationResult {
         const schema: Joi.Schema = Joi.object().keys({
             uri: Joi.string()
                 .trim()
@@ -30,12 +30,19 @@ class BookValidation extends Validation {
                 .required(),
             title: Joi.string().trim().required(),
             img: Joi.string().trim().required(),
+            authors: Joi.string().trim().required(),
+            toc: Joi.array().items(Joi.object().keys({
+                title: Joi.string().trim().required(),
+                uri: Joi.string().trim().required(),
+                level: Joi.string().trim().required(),
+                read: Joi.boolean().required()
+            }).required()).required(),
             description: Joi.string().trim().required(),
             isbn: Joi.string().trim().required(),
+            deleted: Joi.boolean().required(),
             release_date: Joi.string().trim().required(),
-            reviews: Joi.number().min(0).required(),
             stars: Joi.number().min(0).max(5).required()
-        })
+        }).required()
         return schema.validate(params)
     }
 
@@ -56,7 +63,7 @@ class BookValidation extends Validation {
 
         const schema: Joi.Schema = Joi.object().keys({
             id: this.customJoi.objectId().required()
-        });
+        }).required();
 
         return schema.validate(body)
     }
@@ -69,7 +76,7 @@ class BookValidation extends Validation {
     removeBook(body: { id: string }): Joi.ValidationResult {
         const schema: Joi.Schema = Joi.object().keys({
             id: this.customJoi.objectId().required()
-        });
+        }).required();
 
         return schema.validate(body)
     }

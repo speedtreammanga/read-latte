@@ -59,7 +59,6 @@ const BookService: IBookService = {
     async insert(body: IBookModel): Promise<IBookModel> {
         try {
             body.deleted = false
-            body.read = false
             const validate: Joi.ValidationResult = BookValidation.createBook(body);
 
             if (validate.error) {

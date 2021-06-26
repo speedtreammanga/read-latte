@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+    nodejs:
+        command: yarn test:ci
+        volumes:
+            - ./express/src:/app/express/src
+
+    mongo:
+        volumes:
+            - ./data_test:/data/db
+        

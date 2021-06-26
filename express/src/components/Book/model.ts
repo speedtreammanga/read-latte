@@ -2,23 +2,37 @@ import * as connections from '../../config/connection/connection';
 import { Document, Schema } from 'mongoose';
 import { NextFunction } from 'express';
 
+export interface TocItem {
+    title: string,
+    uri: string,
+    level: string,
+    read: boolean
+}
+
 /**
  * @export
- * @interface IBooksModel
+ * @interface IBookBaseModel
  * @extends {Document}
  */
-export interface IBookModel extends Document {
+export interface IBookBaseModel {
     uri: string;
     title: string;
     img: string;
     description: string;
     isbn: string;
-    release_date: Date;
-    reviews: string;
-    stars: number;
-    read: boolean;
+    authors: string;
+    release_date: string;
     deleted: boolean;
+    stars: number;
+    toc: TocItem[];
 }
+
+/**
+ * @export
+ * @interface IBooksModel
+ * @extends {Document}
+ */
+export type IBookModel = IBookBaseModel & Document
 
 const BookSchema: Schema = new Schema({
     uri: {
@@ -28,12 +42,14 @@ const BookSchema: Schema = new Schema({
     title: String,
     img: String,
     description: String,
-    isbn: String,
-    release_date: Date,
-    reviews: String,
-    stars: Number,
-    read: Boolean,
-    deleted: Boolean
+    isbn: {
+        type: String,
+        unique: true
+    },
+    release_date: String,
+    deleted: Boolean,
+    authors: String,
+    stars: Number
 }, {
     collection: 'bookmodel',
     versionKey: false

@@ -2,6 +2,7 @@ import BookService from './service';
 import { HttpError } from '../../config/error';
 import { IBookModel } from './model';
 import { NextFunction, Request, Response } from 'express';
+import { uriToHtml, getBookSchemaFromHtml } from './helpers';
 
 /**
  * @export
@@ -48,6 +49,11 @@ export async function findOne(req: Request, res: Response, next: NextFunction): 
 export async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
         const { uri } = req.body
+
+        if (uri) res.status(400).json({ error: "To insert a book, you need to send a valid uri as part of your request." })
+
+        const html = await uriToHtml(uri)
+        const bookBody = getBookSchemaFromHtml(html)
         
         const book: IBookModel = await BookService.insert(req.body);
 
