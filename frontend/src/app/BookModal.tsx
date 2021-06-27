@@ -60,7 +60,7 @@ const BookModal: React.FC<BookModalProps> = ({ book, open, onClose }) => {
 
         mutation.mutate(JSON.stringify(updatedTocParsed))
 
-    }, [tocParsed])
+    }, [tocParsed, mutation])
 
     return (
         <Drawer size="xl" isOpen={open} onClose={onClose} autoFocus={false}>
