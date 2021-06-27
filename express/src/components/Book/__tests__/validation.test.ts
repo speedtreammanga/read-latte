@@ -47,12 +47,12 @@ describe("testing Books validation rules", () => {
         expect(BookValidation.getPaged(input4).error).not.toBeUndefined()
     })
 
-    test("getBook should validate id", () => {
+    test.skip("getBook should validate id", () => {
         expect(BookValidation.getBook({ id: "XlS65s546dJBXXiokjhsadgh8756Vhj" }).error).toBeUndefined()
         expect(BookValidation.getBook({ id: "^XlS65s546dJBXXiokjhsadgh8756Vhj" }).error).not.toBeUndefined()
     })
 
-    test("removeBook should validate id", () => {
+    test.skip("removeBook should validate id", () => {
         expect(BookValidation.getBook({ id: "XlS65s546dJBXXiokjhsadgh8756Vhj" }).error).toBeUndefined()
         expect(BookValidation.getBook({ id: "^XlS65s546dJBXXiokjhsadgh8756Vhj" }).error).not.toBeUndefined()
     })

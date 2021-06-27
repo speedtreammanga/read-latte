@@ -6,14 +6,15 @@ describe("testing getBookSchemaFromHtml", () => {
         const res = getBookSchemaFromHtml(mockedHtmlPage)
 
         const expected = {
-            // uri: "https://www.oreilly.com/library/view/docker-in-action/9781617294761/",
+            uri: "",
             title: "Docker in Action, Second Edition",
             authors: "by Jeffrey Nickoloff, Stephen Kuenzli",
             img: "https://learning.oreilly.com/library/cover/9781617294761/250w/",
             description: "Docker in Action, Second Edition teaches you to create, deploy, and manage applications hosted in Docker containers running on Linux. Fully updated, with four new chapters and revised best practices and examples, this second edition begins with a clear explanation of the Docker model. Then, you go hands-on with packaging applications, testing, installing, running programs securely, and deploying them across a cluster of hosts. With examples showing how Docker benefits the whole dev lifecycle, you’ll discover techniques for everything from dev-and-test machines to full-scale cloud deployments.",
             isbn: "9781617294761",
             release_date: "November 2019",
-            toc: [
+            stars: 0,
+            toc: JSON.stringify([
                 { title: "Copyright", uri: "https://learning.oreilly.com/library/view/docker-in-action/9781617294761/kindle_split_001.html", level: "1", read: false },
                 { title: "Brief Table of Contents", uri: "https://learning.oreilly.com/library/view/docker-in-action/9781617294761/kindle_split_003.html", level: "1", read: false },
                 { title: "Table of Contents", uri: "https://learning.oreilly.com/library/view/docker-in-action/9781617294761/kindle_split_004.html", level: "1", read: false },
@@ -115,7 +116,7 @@ describe("testing getBookSchemaFromHtml", () => {
                 { title: "Index", uri: "https://learning.oreilly.com/library/view/docker-in-action/9781617294761/kindle_split_029.html", level: "1", read: false },
                 { title: "List of Figures", uri: "https://learning.oreilly.com/library/view/docker-in-action/9781617294761/kindle_split_030.html", level: "1", read: false },
                 { title: "List of Tables", uri: "https://learning.oreilly.com/library/view/docker-in-action/9781617294761/kindle_split_031.html", level: "1", read: false },
-            ]
+            ])
         }
 
         expect(res).toStrictEqual(expected)

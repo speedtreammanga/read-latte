@@ -42,8 +42,8 @@ class BookValidation extends Validation {
             isbn: Joi.string().trim().required(),
             archived: Joi.boolean().required(),
             release_date: Joi.string().trim().required(),
-            create_date: Joi.date().required(),
-            update_date: Joi.date().required(),
+            create_date: Joi.string().required(),
+            update_date: Joi.string().required(),
             stars: Joi.number().min(0).max(5).required()
         }).required()
         return schema.validate(params)
