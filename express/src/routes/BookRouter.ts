@@ -7,6 +7,7 @@ const router: Router = Router();
 router.get('/', BookComponent.findAll);
 router.post('/', BookComponent.create);
 router.get('/:id', BookComponent.findOne);
+router.patch('/:id', BookComponent.patchOne)
 router.delete('/:id', BookComponent.remove);
 
 /**

@@ -11,7 +11,7 @@ describe("testing Books validation rules", () => {
             isbn: "876675644390",
             authors: "Alexandre Doe & Samuel Finch",
             release_date: "November 2020",
-            deleted: false,
+            archived: false,
             stars: 3,
             toc: JSON.stringify([{
                 level: "1",

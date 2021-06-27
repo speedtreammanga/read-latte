@@ -9,7 +9,7 @@ export interface TocItem {
     read: boolean
 }
 
-export interface IBookSimplesModel {
+export interface IBookSimplestModel {
     uri: string;
     title: string;
     img: string;
@@ -17,7 +17,6 @@ export interface IBookSimplesModel {
     isbn: string;
     authors: string;
     release_date: string;
-    deleted: boolean;
     stars: number;
     // toc: TocItem[];
     toc: string;
@@ -28,9 +27,10 @@ export interface IBookSimplesModel {
  * @interface IBookBaseModel
  * @extends {Document}
  */
-export interface IBookBaseModel extends IBookSimplesModel {
+export interface IBookBaseModel extends IBookSimplestModel {
     create_date: string;
     update_date: string;
+    archived: boolean;
 }
 
 /**
@@ -53,12 +53,12 @@ const BookSchema: Schema = new Schema({
         unique: true
     },
     release_date: String,
-    deleted: Boolean,
     authors: String,
     stars: Number,
     toc: String,
     create_date: String,
-    update_date: String
+    update_date: String,
+    archived: Boolean
 }, {
     collection: 'bookmodel',
     versionKey: false

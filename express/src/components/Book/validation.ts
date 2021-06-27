@@ -40,7 +40,7 @@ class BookValidation extends Validation {
             toc: Joi.string().required(),
             description: Joi.string().trim().required(),
             isbn: Joi.string().trim().required(),
-            deleted: Joi.boolean().required(),
+            archived: Joi.boolean().required(),
             release_date: Joi.string().trim().required(),
             create_date: Joi.date().required(),
             update_date: Joi.date().required(),
@@ -82,6 +82,16 @@ class BookValidation extends Validation {
         }).required();
 
         return schema.validate(body)
+    }
+
+    patchBook(id: string, params: Partial<IBookBaseModel>): Joi.ValidationResult {
+        const schema: Joi.Schema = Joi.object().keys({
+            id: this.customJoi.objectId().required(),
+            toc: Joi.string(),
+            archived: Joi.boolean(),
+            stars: Joi.number().min(0).max(5)
+        }).required()
+        return schema.validate({ id, ...params })
     }
 }
 

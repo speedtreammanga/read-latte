@@ -13,8 +13,12 @@ import { uriToHtml, getBookSchemaFromHtml } from './helpers';
  */
 export async function findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-        const { skip, take } = req.params
-        const books: IBookModel[] = await BookService.findAll(Number(skip) || 0, Number(take) || 0);
+        const { skip, limit, archived } = req.query
+        const books: IBookModel[] = await BookService.findAll(
+            archived === "true"
+            , Number(skip) || 0
+            , Number(limit) || 0
+        );
 
         res.status(200).json(books);
     } catch (error) {
@@ -57,7 +61,8 @@ export async function create(req: Request, res: Response, next: NextFunction): P
             ...getBookSchemaFromHtml(html),
             uri,
             create_date: new Date().toISOString(),
-            update_date: new Date().toISOString()
+            update_date: new Date().toISOString(),
+            archived: false
         }
         
         const found = await BookModel.findOne({ isbn: bookBody.isbn })
@@ -66,6 +71,24 @@ export async function create(req: Request, res: Response, next: NextFunction): P
         const book: IBookModel = await BookService.insert(bookBody);
 
         res.status(201).json(book);
+    } catch (error) {
+        next(new HttpError(error.message.status, error.message));
+    }
+}
+
+/**
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @returns {Promise<void>}
+ */
+export async function patchOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+        const book: IBookModel = await BookService.patch(req.params.id, req.body);
+
+        // res.status(200).json()
+        res.status(200).json(book);
     } catch (error) {
         next(new HttpError(error.message.status, error.message));
     }

@@ -14,7 +14,7 @@ const BookService = {
      * @returns {Promise<IBookModel[]>}
      * @memberof BookService
      */
-    async findAll(skip?: number, limit?: number): Promise<IBookModel[]> {
+    async findAll(archived: boolean = false, skip?: number, limit?: number): Promise<IBookModel[]> {
         try {
             const paged = { skip: skip || 0, limit: limit || 10 }
             const validate: Joi.ValidationResult = BookValidation.getPaged(paged)
@@ -23,7 +23,10 @@ const BookService = {
                 throw new Error(validate.error.message)
             }
 
-            return await BookModel.find({}, '-toc')
+            return await BookModel.find({ archived }, '-toc')
+                                    .skip(skip)
+                                    .limit(limit)
+                                    .sort('-update_date')
         } catch (error) {
             throw new Error(error.message);
         }
@@ -72,6 +75,32 @@ const BookService = {
 
     /**
      * @param {string} id
+     * @param {Partial<IBookBaseModel>} body
+     * @returns {Promise<IBookModel>}
+     * @memberof BookService
+     */
+    async patch(id: string, body: Partial<IBookBaseModel>): Promise<IBookModel> {
+        try {
+            const validate: Joi.ValidationResult = BookValidation.patchBook(id, body);
+            // const validate: Joi.ValidationResult = BookValidation.removeBook({ id });
+   
+            if (validate.error) {
+                throw new Error(validate.error.message);
+            }
+
+            const book = await BookModel.findByIdAndUpdate(
+                { _id: Types.ObjectId(id) },
+                body,
+                { upsert: true, useFindAndModify: false },
+            )
+            return book;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
+
+    /**
+     * @param {string} id
      * @returns {Promise<IBookModel>}
      * @memberof BookService
      */
@@ -91,7 +120,10 @@ const BookService = {
             //     { upsert: true },
             // )
             // hard del
-            const book = await BookModel.findOneAndRemove({ _id: Types.ObjectId(id) })
+            const book = await BookModel.findOneAndRemove(
+                { _id: Types.ObjectId(id) },
+                { useFindAndModify: false }
+            )
             return book;
         } catch (error) {
             throw new Error(error.message);

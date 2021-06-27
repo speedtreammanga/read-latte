@@ -1,6 +1,6 @@
 import nodeFetch from 'node-fetch'
 import cheerio from 'cheerio'
-import { IBookSimplesModel, TocItem } from './model'
+import { IBookSimplestModel, TocItem } from './model'
 
 export async function uriToHtml(url: string): Promise<string> {
     try {
@@ -11,7 +11,7 @@ export async function uriToHtml(url: string): Promise<string> {
     }
 }
 
-export function getBookSchemaFromHtml(content: string): IBookSimplesModel {
+export function getBookSchemaFromHtml(content: string): IBookSimplestModel {
     try {
         const $ = cheerio.load(content)
         const $body = $('body')
@@ -40,7 +40,6 @@ export function getBookSchemaFromHtml(content: string): IBookSimplesModel {
             release_date: `${arrRelease_date[1]} ${arrRelease_date[2]}`,
             img: $($body.find('.t-cover-img')[0]).attr('src'),
             description: $($body.find('.t-description span p')[0]).text(),
-            deleted: false,
             stars: 0,
             uri: ""
         }
