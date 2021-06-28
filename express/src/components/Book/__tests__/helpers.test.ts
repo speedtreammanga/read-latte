@@ -1,4 +1,4 @@
-import { mockedHtmlPage } from './data/oreillyBookPage'
+import { mockedHtmlPage } from './oreillyBookPage.data'
 import { getBookSchemaFromHtml } from '../helpers'
 
 describe("testing getBookSchemaFromHtml", () => {
