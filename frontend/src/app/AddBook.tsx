@@ -3,13 +3,14 @@ import { Button, Flex, Input, Text } from "@chakra-ui/react"
 import { FiPlus } from 'react-icons/fi'
 import { useMutation, useQueryClient } from "react-query"
 import axios from "axios"
+import { api } from '../api'
 
 const AddBook: React.FC = props => {
     const [uri, setUri] = useState("")
     const queryClient = useQueryClient()
 
     const mutation = useMutation(
-        () => axios.post("http://localhost:8080/books", { uri }).then(res => res.data)
+        () => axios.post(`${api.url}/books`, { uri }).then(res => res.data)
         ,{
             onSuccess: (book) => {
                 queryClient.invalidateQueries(['books'])

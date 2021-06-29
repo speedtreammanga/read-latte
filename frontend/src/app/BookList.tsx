@@ -5,6 +5,7 @@ import { Stack, Text, Flex, Button } from '@chakra-ui/react'
 import BookListItem, { BookListItemSkeleton } from "./BookListItem"
 import { IBookModel } from './interfaces'
 import BookModal from './BookModal'
+import { api } from '../api'
 
 interface BookListProps {
     displayMode: "list" | "grid"
@@ -17,7 +18,7 @@ const BookList: React.FC<BookListProps> = ({ displayMode, view }) => {
     const [page, setPage] = useState(0)
 
     const query = useQuery(['books', `page:${page}`, `view:${view}`], () =>
-        axios.get(`http://localhost:8080/books?archived=${view === "archived"}&skip=${page*10}&limit=${100}`).then(r => r.data)
+        axios.get(`${api.url}/books?archived=${view === "archived"}&skip=${page*10}&limit=${100}`).then(r => r.data)
         ,{ keepPreviousData: true }
     )
 

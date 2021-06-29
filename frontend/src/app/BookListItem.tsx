@@ -5,6 +5,7 @@ import { FiExternalLink, FiTrash2, FiArchive } from 'react-icons/fi'
 import { useMutation, useQueryClient } from "react-query"
 import { IBookModel } from './interfaces'
 import axios, { AxiosResponse } from "axios"
+import { api } from '../api'
 
 export const BookListItemSkeleton: React.FC = () => (
     <Box p="5" maxW="800px" borderRadius="md" mb="6" borderWidth="1px" position="relative">
@@ -136,8 +137,8 @@ const BookListItem: React.FC<BookListItemProps> = ({ book, displayMode, onClick 
     const componentProps = {
         book
         ,onClick
-        ,onArchive: (archived: boolean) => mutation.mutate(() => axios.patch(`http://localhost:8080/books/${book._id}`, { archived }))
-        ,onDelete: () => mutation.mutate(() => axios.delete(`http://localhost:8080/books/${book._id}`))
+        ,onArchive: (archived: boolean) => mutation.mutate(() => axios.patch(`${api.url}/books/${book._id}`, { archived }))
+        ,onDelete: () => mutation.mutate(() => axios.delete(`${api.url}/books/${book._id}`))
     }
 
     return displayMode === "grid"

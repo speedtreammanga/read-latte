@@ -6,6 +6,7 @@ import { BsStarFill } from 'react-icons/bs'
 import { FiExternalLink, FiCheckCircle, FiCircle } from 'react-icons/fi'
 import { useQueryClient, useQuery, useMutation } from "react-query/react"
 import { useEffect } from "react"
+import { api } from '../api'
 
 interface BookModalProps {
     book: IBookModel
@@ -25,7 +26,7 @@ const BookModal: React.FC<BookModalProps> = ({ book, open, onClose }) => {
     }, [book])
 
     const mutation = useMutation((updatedToc: string) =>
-        axios.patch(`http://localhost:8080/books/${book._id}`, { toc: updatedToc }).then(r => r.data)
+        axios.patch(`${api.url}/books/${book._id}`, { toc: updatedToc }).then(r => r.data)
         , {
             onSuccess: (book: IBookModel) => queryClient.invalidateQueries(['books', book._id]),
             // onSuccess: (book: IBookModel) => queryClient.setQueryData(['books', book._id], () => book)
@@ -36,7 +37,7 @@ const BookModal: React.FC<BookModalProps> = ({ book, open, onClose }) => {
     // TODO: find a better way to update store, and right way to initialize data.
     // taking too much time to render component...
     const { data } = useQuery(['books', book._id], () =>
-        axios.get(`http://localhost:8080/books/${book._id}`).then(r => r.data)
+        axios.get(`${api.url}/books/${book._id}`).then(r => r.data)
         , {
             initialData: queryClient.getQueryData(['books', book._id]),
             onSuccess: (book: IBookModel) => queryClient.setQueryData(['books', 'page:0', 'view:books'], (old) => { 
